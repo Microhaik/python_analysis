@@ -223,3 +223,28 @@ def sales_trend(request):
     })
     return JsonResponse(json_6)##打包并发送给前端
 
+"""
+红球1号频次分布，取前12个
+"""
+def red1_all_freq(req:Any):
+    BASE = settings.BASE_DIR
+    csv_path = os.path.join(BASE, "DjangoProject", "Web", "TwoColorBall.csv")
+    df = pd.read_csv(csv_path)
+    df["红1"] = df["红1"].astype(int)
+
+    red1 = df["红1"].values
+    red1 = pd.Series(red1).value_counts().sort_values(ascending=False).head(12)
+
+    data = []
+    for num, cnt in red1.items():
+        data.append({
+            "value": int(cnt),
+            "name": f"红1:{num}"
+        })
+
+    json_6 = {
+        "msg": "ok",
+        "title": "红1频次占比",
+        "data": data,
+    }
+    return JsonResponse(json_6)
