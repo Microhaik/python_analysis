@@ -28,6 +28,7 @@ urlpatterns = [
     path("every_red_ball_top1/",views.every_red_ball_top1,name="every_blue_balltop1"),
     path("cold_hot_ball/",views.cold_hot_ball,name="cold_hot_ball_analysis"),
     path("first_and_second_prizes/",views.first_and_second_prizes,name="first_and_second_prizes"),
+    path('sales_trend/', views.sales_trend, name="sales_trend"),
 ]
 """
 访问路由，启动django服务，用127.0.0.1:8000/路由?参数（有则写）
