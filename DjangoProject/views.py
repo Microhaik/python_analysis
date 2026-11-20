@@ -17,6 +17,8 @@ import os #组合文件地址
 import numpy as np
 import pandas as pd
 
+
+
 """
 第一个案例，红球中奖率最高的十个点数
 """
@@ -157,6 +159,25 @@ def cold_hot_ball(req:Any):
         }
     }
     return JsonResponse(json_4)
+"""
+红球奇偶比分布--胡浩志
+"""
+def red_ball_event(request:Any):
+    BASE = settings.BASE_DIR
+    csv_path = os.path.join(BASE,"DjangoProject","Web","TwoColorBall.csv")
+    df = pd.read_csv(csv_path)
+    red_col = ["红1", "红2", "红3", "红4", "红5", "红6"]
+    df[red_col] = df[red_col].astype(int)
+    df['奇数个数'] = (df[red_col] % 2).sum(axis=1)
+    df['奇偶比'] = df['奇数个数'].apply(lambda x: f"{x}奇{6 - x}偶")
+    counts = df['奇偶比'].value_counts()
+    data_list = [{'name': k, 'value': int(v)} for k, v in counts.items()]
+    json_5 = {
+        "msg": "ok",
+        "title": "红球奇偶比分布",
+        "data": data_list
+    }
+    return JsonResponse(json_5)
 
 def first_and_second_prizes(req:Any):
     BASE = settings.BASE_DIR

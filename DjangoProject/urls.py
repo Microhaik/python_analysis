@@ -27,6 +27,7 @@ urlpatterns = [
     path("blue_ball_top8/",views.blue_ball_top8,name="blue_ball_top8"),
     path("every_red_ball_top1/",views.every_red_ball_top1,name="every_blue_balltop1"),
     path("cold_hot_ball/",views.cold_hot_ball,name="cold_hot_ball_analysis"),
+    path("red_ball_event/",views.red_ball_event,name="红球奇偶比分布"),
     path("first_and_second_prizes/",views.first_and_second_prizes,name="first_and_second_prizes"),
 ]
 """
