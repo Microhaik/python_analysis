@@ -822,9 +822,20 @@ function echarts_32() {
 function echarts_33() {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('fb3'));
+        $.ajax({
+        url: 'red1_all_freq/',
+        dataType: "json",
+        success: function(data) {
+            console.log(data.data);
+            result = data.data;
+            xData = [];
+
+            result.forEach(function(item) {
+                xData.push(item.name);
+            })
 option = {
 	    title: [{
-        text: '兴趣分布',
+        text: '红1球频次分布',
         left: 'center',
         textStyle: {
             color: '#fff',
@@ -843,7 +854,7 @@ position:function(p){   //其中p为当前鼠标的位置
     top:'70%',
        itemWidth: 10,
         itemHeight: 10,
-        data:['汽车','旅游','财经','教育','软件','其他'],
+        data:xData,
                 textStyle: {
             color: 'rgba(255,255,255,.5)',
 			fontSize:'12',
@@ -851,21 +862,14 @@ position:function(p){   //其中p为当前鼠标的位置
     },
     series: [
         {
-        	name:'兴趣分布',
+        	name:'红1球点数',
             type:'pie',
 			center: ['50%', '42%'],
             radius: ['40%', '60%'],
                    color: ['#065aab', '#066eab', '#0682ab', '#0696ab', '#06a0ab','#06b4ab','#06c8ab','#06dcab','#06f0ab'],	
             label: {show:false},
 			labelLine: {show:false},
-            data:[
-                {value:2, name:'汽车'},
-                {value:3, name:'旅游'},
-                {value:1, name:'财经'},
-                {value:4, name:'教育'},
-                {value:8, name:'软件'},
-                {value:1, name:'其他'},
-            ]
+            data:result,
         }
     ]
 };
@@ -875,8 +879,11 @@ position:function(p){   //其中p为当前鼠标的位置
         window.addEventListener("resize",function(){
             myChart.resize();
         });
-    }
-				
+
+        }
+
+	})
+             }
 	
 })
 

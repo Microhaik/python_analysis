@@ -158,6 +158,9 @@ def cold_hot_ball(req:Any):
     }
     return JsonResponse(json_4)
 
+
+
+
 def first_and_second_prizes(req:Any):
     BASE = settings.BASE_DIR
     csv_path = os.path.join(BASE,"DjangoProject","web","TwoColorBall.csv")
@@ -223,3 +226,52 @@ def sales_trend(request):
     })
     return JsonResponse(json_6)##打包并发送给前端
 
+"""
+红球奇偶比分布
+"""
+def red_ball_event(request:Any):
+    BASE = settings.BASE_DIR
+    csv_path = os.path.join(BASE,"DjangoProject","Web","TwoColorBall.csv")
+    df = pd.read_csv(csv_path)
+    red_col = ["红1", "红2", "红3", "红4", "红5", "红6"]
+    df[red_col] = df[red_col].astype(int)
+    df['奇数个数'] = (df[red_col] % 2).sum(axis=1)
+    df['奇偶比'] = df['奇数个数'].apply(lambda x: f"{x}奇{6 - x}偶")
+    counts = df['奇偶比'].value_counts()
+    data_list = [{'name': k, 'value': int(v)} for k, v in counts.items()]
+    json_7 = {
+        "msg": "ok",
+        "title": "红球奇偶比分布",
+        "data": data_list
+    }
+    return JsonResponse(json_7)
+
+"""
+红球1号频次分布，取前12个
+"""
+def red1_all_freq(req: Any):
+    BASE = settings.BASE_DIR
+    csv_path = os.path.join(
+        BASE, "DjangoProject", "web", "TwoColorBall.csv"
+    )
+    df = pd.read_csv(csv_path)
+    df["红1"] = df["红1"].astype(int)
+
+    red1 = df["红1"].values
+    red1 = pd.Series(red1).value_counts().sort_values(
+        ascending=False
+    ).head(12)
+
+    data = []
+    for num, cnt in red1.items():
+        data.append({
+            "value": int(cnt),
+            "name": f"红1:{num}"
+        })
+
+    json_8 = {
+        "msg": "ok",
+        "title": "红1频次占比",
+        "data": data,
+    }
+    return JsonResponse(json_8)
